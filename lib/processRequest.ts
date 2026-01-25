@@ -63,7 +63,7 @@ export async function processUserRequest(chatId: number, input: string): Promise
       text: '🤖 Анализирую источники с помощью AI...',
     });
 
-    let aiAnalysis;
+    let aiAnalysis: { matches: Array<{ sourceIndex: number; confidence: number; explanation: string }>; summary: string } | null = null;
     try {
       // Проверяем наличие API ключа и контента перед AI-анализом
       const hasApiKey = !!(process.env.OPENAI_API_KEY || process.env.OPENROUTER_API_KEY);

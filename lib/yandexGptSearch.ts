@@ -129,7 +129,7 @@ export async function searchWithYandexGPT(query: string): Promise<SearchResult[]
     const urls = gptResponse.match(urlPattern) || [];
     
     if (urls.length > 0) {
-      return urls.slice(0, 5).map((url, index) => {
+      return urls.slice(0, 5).map((url: string, index: number) => {
         const urlIndex = gptResponse.indexOf(url);
         const context = gptResponse.substring(Math.max(0, urlIndex - 150), urlIndex + url.length + 150);
         const titleMatch = context.match(/(?:название|источник|сайт|ресурс|title)[:：]\s*([^\n\.]+)/i);
