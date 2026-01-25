@@ -13,14 +13,25 @@ export const runtime = 'nodejs';
  * Обработка POST запросов от Telegram
  */
 export async function POST(request: NextRequest) {
+  const startTime = Date.now();
+  
   try {
+    // Логируем начало обработки
+    console.log('[WEBHOOK] Получен запрос от Telegram');
+    console.log('[WEBHOOK] Headers:', {
+      'content-type': request.headers.get('content-type'),
+      'user-agent': request.headers.get('user-agent'),
+      'x-telegram-bot-api-secret-token': request.headers.get('x-telegram-bot-api-secret-token') ? 'present' : 'missing',
+    });
+    
     // Быстрая валидация
     const body = await request.json() as TelegramUpdate;
     
-    console.log('Получен webhook от Telegram:', {
+    console.log('[WEBHOOK] Получен webhook от Telegram:', {
       updateId: body.update_id,
       hasMessage: !!body.message,
       hasEditedMessage: !!body.edited_message,
+      timestamp: new Date().toISOString(),
     });
     
     // Проверка секретного токена (если установлен)
@@ -92,7 +103,9 @@ export async function POST(request: NextRequest) {
 
     // Запускаем обработку асинхронно (не ждем завершения)
     // Это позволяет быстро вернуть 200 OK
-    console.log('Запуск обработки запроса для chatId:', chatId);
+    console.log('[WEBHOOK] Запуск обработки запроса для chatId:', chatId);
+    console.log('[WEBHOOK] Текст сообщения:', text?.substring(0, 100));
+    
     processUserRequest(chatId, text).catch(async (error) => {
       console.error('Ошибка при асинхронной обработке запроса:', error);
       console.error('Детали ошибки:', {
@@ -115,10 +128,18 @@ export async function POST(request: NextRequest) {
     });
 
     // Сразу возвращаем 200 OK
+    const duration = Date.now() - startTime;
+    console.log(`[WEBHOOK] Запрос обработан за ${duration}ms, возвращаем 200 OK`);
     return NextResponse.json({ ok: true });
 
   } catch (error) {
-    console.error('Ошибка в webhook обработчике:', error);
+    const duration = Date.now() - startTime;
+    console.error('[WEBHOOK] Ошибка в webhook обработчике:', error);
+    console.error('[WEBHOOK] Детали ошибки:', {
+      message: error instanceof Error ? error.message : 'Неизвестная ошибка',
+      stack: error instanceof Error ? error.stack : undefined,
+      duration: `${duration}ms`,
+    });
     
     // Все равно возвращаем 200 OK, чтобы Telegram не повторял запрос
     return NextResponse.json(
