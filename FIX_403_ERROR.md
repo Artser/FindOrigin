@@ -73,7 +73,7 @@
 Откройте в браузере (замените на ваши значения):
 
 ```
-https://www.googleapis.com/customsearch/v1?key=ВАШ_API_КЛЮЧ&cx=c3818dfb6fe534e25&q=test
+https://www.googleapis.com/customsearch/v1?key=ваш_google_api_ключ&cx=ваш_search_engine_id&q=test
 ```
 
 Если в браузере работает, а в PowerShell нет - проблема в коде запроса.
@@ -101,8 +101,8 @@ https://www.googleapis.com/customsearch/v1?key=ВАШ_API_КЛЮЧ&cx=c3818dfb6f
 Выполните эту команду для получения детальной информации об ошибке:
 
 ```powershell
-$apiKey = "AIzaSyDn0HCY056_ewE6vEAs2rD01_DPtXbs20I"
-$engineId = "c3818dfb6fe534e25"
+$apiKey = "ваш_google_api_ключ"
+$engineId = "ваш_search_engine_id"
 $query = "test"
 $url = "https://www.googleapis.com/customsearch/v1?key=$apiKey&cx=$engineId&q=$query"
 

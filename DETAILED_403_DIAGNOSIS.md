@@ -13,7 +13,7 @@
 ### Шаг 2: Проверка привязки API ключа
 
 1. Откройте: https://console.cloud.google.com/apis/credentials
-2. Найдите ваш API ключ `AIzaSyDn0HCY056_ewE6vEAs2rD01_DPtXbs20I`
+2. Найдите ваш API ключ
 3. Нажмите на него
 4. Проверьте раздел **"API restrictions"**:
    - Должно быть выбрано **"Restrict key"**
@@ -39,7 +39,7 @@
 Откройте в браузере (замените на ваш ключ):
 
 ```
-https://www.googleapis.com/customsearch/v1?key=AIzaSyDn0HCY056_ewE6vEAs2rD01_DPtXbs20I&cx=c3818dfb6fe534e25&q=test
+https://www.googleapis.com/customsearch/v1?key=ваш_google_api_ключ&cx=ваш_search_engine_id&q=test
 ```
 
 Если в браузере тоже ошибка 403, значит проблема в настройках Google Cloud, а не в PowerShell.

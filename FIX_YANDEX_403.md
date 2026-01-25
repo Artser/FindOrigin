@@ -84,7 +84,7 @@ SERPAPI_KEY=ваш_ключ
 Если хотите использовать Yandex GPT только для AI-анализа (не для поиска), закомментируйте в `.env.local`:
 
 ```env
-# YANDEX_CLOUD_API_KEY=AQVN...
+# YANDEX_CLOUD_API_KEY=ваш_yandex_cloud_api_ключ
 # YANDEX_FOLDER_ID=b1g...
 # YANDEX_AUTH_TYPE=Api-Key
 ```
@@ -127,7 +127,7 @@ SERPAPI_KEY=ваш_ключ
 Можно протестировать Yandex GPT API напрямую:
 
 ```powershell
-$apiKey = "AQVN..."
+$apiKey = "ваш_yandex_cloud_api_ключ"
 $folderId = "b1g..."
 $body = @{
     modelUri = "gpt://$folderId/yandexgpt/latest"
