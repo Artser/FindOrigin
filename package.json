@@ -1,0 +1,38 @@
+{
+  "name": "findorigin",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Artser/FindOrigin.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Artser/FindOrigin/issues"
+  },
+  "homepage": "https://github.com/Artser/FindOrigin#readme",
+  "dependencies": {
+    "@types/node": "^25.0.10",
+    "@types/react": "^19.2.9",
+    "@types/react-dom": "^19.2.3",
+    "axios": "^1.13.2",
+    "cheerio": "^1.2.0",
+    "date-fns": "^4.1.0",
+    "next": "^16.1.4",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
+    "typescript": "^5.9.3"
+  },
+  "devDependencies": {
+    "@types/cheerio": "^0.22.35"
+  }
+}
