@@ -53,8 +53,8 @@ YANDEX_SEARCH_API_KEY=ваш_ключ
 Если у вас уже есть Google API ключ, добавьте в `.env`:
 
 ```env
-GOOGLE_SEARCH_API_KEY=ваш_google_api_ключ
-GOOGLE_SEARCH_ENGINE_ID=ваш_search_engine_id
+GOOGLE_SEARCH_API_KEY=AIzaSyDn0HCY056_ewE6vEAs2rD01_DPtXbs20I
+GOOGLE_SEARCH_ENGINE_ID=c3818dfb6fe534e25
 ```
 
 ### Вариант 2: Использовать Bing Search API (рекомендуется для России)

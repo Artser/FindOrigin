@@ -93,7 +93,7 @@ Invoke-WebRequest -Uri "https://find-origin.vercel.app/api/webhook" -Method GET
 3. Добавьте все переменные из `.env.local`:
    ```
    TELEGRAM_BOT_TOKEN=6436071741:AAFqCJ_EkbFKQQXJN5xCVb0Fh8h0wwSjuyI
-   OPENROUTER_API_KEY=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
+   OPENROUTER_API_KEY=ваш_openrouter_api_ключ
    OPENAI_BASE_URL=https://openrouter.ai/api/v1
    GOOGLE_SEARCH_API_KEY=ваш_ключ
    GOOGLE_SEARCH_ENGINE_ID=ваш_id

@@ -40,8 +40,8 @@ YANDEX_FOLDER_ID=ваш_folder_id
 **Используйте Google Custom Search API**, который уже настроен в вашем `.env.local`:
 
 ```env
-GOOGLE_SEARCH_API_KEY=ваш_google_api_ключ
-GOOGLE_SEARCH_ENGINE_ID=ваш_search_engine_id
+GOOGLE_SEARCH_API_KEY=AIzaSyDn0HCY056_ewE6vEAs2rD01_DPtXbs20I
+GOOGLE_SEARCH_ENGINE_ID=c3818dfb6fe534e25
 ```
 
 Этот API уже работает и настроен правильно.
