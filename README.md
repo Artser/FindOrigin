@@ -24,7 +24,7 @@ npm install
 ```powershell
 Copy-Item .env.local.example .env.local
 ```
-
+11
 Заполните следующие переменные:
 
 - `TELEGRAM_BOT_TOKEN` - Токен бота от [@BotFather](https://t.me/BotFather)
