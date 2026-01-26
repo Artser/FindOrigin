@@ -1,6 +1,22 @@
 # Script for setting up Telegram webhook
+# Использует токен из .env.local
 
-$token = "6825751325:AAGrU8yECxlw6YlH8VBXDyRwYmqdHhf3Z3k"
+# Попытка прочитать токен из .env.local
+$envFile = ".env.local"
+if (Test-Path $envFile) {
+    $envContent = Get-Content $envFile -Raw
+    if ($envContent -match "TELEGRAM_BOT_TOKEN\s*=\s*([^\r\n]+)") {
+        $token = $matches[1].Trim()
+        Write-Host "Токен загружен из .env.local" -ForegroundColor Green
+    } else {
+        Write-Host "Токен не найден в .env.local, используйте токен из .env.local" -ForegroundColor Yellow
+        $token = "6825751325:AAGrU8yECxlw6YlH8VBXDyRwYmqdHhf3Z3k"
+    }
+} else {
+    Write-Host "Файл .env.local не найден, используйте токен из .env.local" -ForegroundColor Yellow
+    $token = "6825751325:AAGrU8yECxlw6YlH8VBXDyRwYmqdHhf3Z3k"
+}
+
 $webhookUrl = "https://find-origin.vercel.app/api/telegram"
 
 Write-Host "=== Deleting old webhook ===" -ForegroundColor Cyan
