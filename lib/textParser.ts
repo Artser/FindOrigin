@@ -45,10 +45,24 @@ export async function extractTextFromTelegramPost(url: string): Promise<string> 
     // Попытка получить HTML страницы
     const response = await axios.get(normalizedUrl, {
       headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+        'Accept-Language': 'ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7',
       },
       timeout: 10000,
+      validateStatus: (status) => status < 500,
     });
+
+    // Проверяем статус ответа
+    if (response.status === 403) {
+      throw new Error(`Доступ запрещен (403) для ${normalizedUrl}`);
+    }
+    if (response.status === 404) {
+      throw new Error(`Страница не найдена (404) для ${normalizedUrl}`);
+    }
+    if (response.status >= 400) {
+      throw new Error(`HTTP ошибка ${response.status} для ${normalizedUrl}`);
+    }
 
     // Простой парсинг HTML для извлечения текста поста
     // В реальности это может быть сложнее из-за динамической загрузки контента
@@ -70,7 +84,21 @@ export async function extractTextFromTelegramPost(url: string): Promise<string> 
     // Если не удалось найти структурированный текст, возвращаем пустую строку
     return '';
   } catch (error) {
-    console.error('Ошибка при извлечении текста из Telegram-поста:', error);
+    // Логируем только краткую информацию об ошибке
+    if (error instanceof Error) {
+      const errorMessage = error.message;
+      if (errorMessage.includes('403') || errorMessage.includes('Forbidden')) {
+        console.warn(`[403] Доступ запрещен для Telegram-поста: ${normalizedUrl}`);
+      } else if (errorMessage.includes('404') || errorMessage.includes('Not Found')) {
+        console.warn(`[404] Telegram-пост не найден: ${normalizedUrl}`);
+      } else if (errorMessage.includes('timeout') || errorMessage.includes('ETIMEDOUT')) {
+        console.warn(`[Timeout] Превышено время ожидания для Telegram-поста: ${normalizedUrl}`);
+      } else {
+        console.warn(`[Error] Не удалось извлечь текст из Telegram-поста: ${errorMessage}`);
+      }
+    } else {
+      console.warn(`[Error] Не удалось извлечь текст из Telegram-поста`);
+    }
     throw new Error(`Не удалось извлечь текст из поста: ${error instanceof Error ? error.message : 'Неизвестная ошибка'}`);
   }
 }

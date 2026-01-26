@@ -422,11 +422,27 @@ export async function extractSourceContent(url: string): Promise<SourceContent> 
 
     const response = await axios.get(url, {
       headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+        'Accept-Language': 'ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7',
+        'Accept-Encoding': 'gzip, deflate, br',
+        'Referer': 'https://www.google.com/',
       },
       timeout: 15000,
       maxRedirects: 5,
+      validateStatus: (status) => status < 500, // Не выбрасывать ошибку для 4xx
     });
+
+    // Проверяем статус ответа
+    if (response.status === 403) {
+      throw new Error(`Доступ запрещен (403) для ${url}. Сайт блокирует автоматические запросы.`);
+    }
+    if (response.status === 404) {
+      throw new Error(`Страница не найдена (404) для ${url}.`);
+    }
+    if (response.status >= 400) {
+      throw new Error(`HTTP ошибка ${response.status} для ${url}.`);
+    }
 
     const $ = cheerio.load(response.data);
     
@@ -490,7 +506,21 @@ export async function extractSourceContent(url: string): Promise<SourceContent> 
       sourceType: determineSourceType(url),
     };
   } catch (error) {
-    console.error(`Ошибка при извлечении контента из ${url}:`, error);
+    // Логируем только краткую информацию об ошибке, без полного stack trace
+    if (error instanceof Error) {
+      const errorMessage = error.message;
+      if (errorMessage.includes('403') || errorMessage.includes('Forbidden')) {
+        console.warn(`[403] Доступ запрещен для ${url}`);
+      } else if (errorMessage.includes('404') || errorMessage.includes('Not Found')) {
+        console.warn(`[404] Страница не найдена: ${url}`);
+      } else if (errorMessage.includes('timeout') || errorMessage.includes('ETIMEDOUT')) {
+        console.warn(`[Timeout] Превышено время ожидания для ${url}`);
+      } else {
+        console.warn(`[Error] Не удалось загрузить ${url}: ${errorMessage}`);
+      }
+    } else {
+      console.warn(`[Error] Не удалось загрузить ${url}`);
+    }
     
     // Возвращаем минимальную информацию даже при ошибке
     return {
@@ -522,7 +552,7 @@ export async function getSourcesContent(results: SearchResult[], limit: number =
       }
       return content;
     } catch (error) {
-      console.error(`Ошибка при получении контента из ${result.url}:`, error);
+      // Ошибка уже обработана в extractSourceContent, здесь просто возвращаем fallback
       return {
         url: result.url,
         title: result.title,
