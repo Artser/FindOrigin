@@ -60,7 +60,7 @@ export async function processUserRequest(chatId: number, input: string): Promise
     // Шаг 5: AI-анализ и сравнение смысла
     await sendMessage({
       chatId,
-      text: '🤖 Анализирую источники с помощью AI...',
+      text: '🤖 Сравниваю источники с исходным текстом через AI...',
     });
 
     let aiAnalysis: { matches: Array<{ sourceIndex: number; confidence: number; explanation: string }>; summary: string } | null = null;
