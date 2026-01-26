@@ -97,3 +97,4 @@ OPENAI_BASE_URL=https://api.openai.com/v1
 - `YANDEX_ENV_SETUP.md` - инструкция по настройке Yandex Cloud API
 
 
+

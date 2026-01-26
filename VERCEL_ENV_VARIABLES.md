@@ -208,3 +208,4 @@ GOOGLE_SEARCH_ENGINE_ID=ваш_search_engine_id
 - **Google Cloud Console:** https://console.cloud.google.com/
 - **Azure Portal:** https://portal.azure.com/
 
+

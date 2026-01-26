@@ -222,3 +222,4 @@ Write-Host "`n=== Готово ===" -ForegroundColor Cyan
 4. **Проверьте webhook** - используйте команды выше
 
 
+

@@ -133,4 +133,31 @@ export async function getMe(): Promise<any> {
   }
 }
 
+/**
+ * Получение информации о webhook
+ */
+export async function getWebhookInfo(): Promise<any> {
+  const botToken = process.env.TELEGRAM_BOT_TOKEN;
+  
+  if (!botToken) {
+    throw new Error('TELEGRAM_BOT_TOKEN не установлен');
+  }
+
+  const url = `${TELEGRAM_API_URL}${botToken}/getWebhookInfo`;
+  
+  try {
+    const response = await fetch(url);
+    
+    if (!response.ok) {
+      throw new Error(`Telegram API error: ${response.status}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Ошибка при получении информации о webhook:', error);
+    throw error;
+  }
+}
+
+
 

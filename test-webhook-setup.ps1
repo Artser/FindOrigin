@@ -143,3 +143,4 @@ Write-Host "   Vercel Dashboard → Deployments → последний депл�
 Write-Host ""
 Write-Host "=== Конец проверки ===" -ForegroundColor Cyan
 
+

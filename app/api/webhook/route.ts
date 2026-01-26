@@ -15,17 +15,39 @@ export const runtime = 'nodejs';
 export async function POST(request: NextRequest) {
   const startTime = Date.now();
   
+  // Логируем СРАЗУ при получении запроса (до любых операций)
+  console.log('[WEBHOOK] ========================================');
+  console.log('[WEBHOOK] Получен POST запрос на /api/webhook');
+  console.log('[WEBHOOK] Время:', new Date().toISOString());
+  console.log('[WEBHOOK] URL:', request.url);
+  console.log('[WEBHOOK] Method:', request.method);
+  
   try {
-    // Логируем начало обработки
-    console.log('[WEBHOOK] Получен запрос от Telegram');
+    // Логируем заголовки
     console.log('[WEBHOOK] Headers:', {
       'content-type': request.headers.get('content-type'),
       'user-agent': request.headers.get('user-agent'),
       'x-telegram-bot-api-secret-token': request.headers.get('x-telegram-bot-api-secret-token') ? 'present' : 'missing',
+      'x-forwarded-for': request.headers.get('x-forwarded-for'),
+      'x-real-ip': request.headers.get('x-real-ip'),
     });
     
-    // Быстрая валидация
-    const body = await request.json() as TelegramUpdate;
+    // Читаем тело запроса
+    console.log('[WEBHOOK] Начинаем чтение тела запроса...');
+    const bodyText = await request.text();
+    console.log('[WEBHOOK] Тело запроса получено, длина:', bodyText.length, 'символов');
+    console.log('[WEBHOOK] Первые 200 символов тела:', bodyText.substring(0, 200));
+    
+    // Парсим JSON
+    let body: TelegramUpdate;
+    try {
+      body = JSON.parse(bodyText) as TelegramUpdate;
+      console.log('[WEBHOOK] JSON успешно распарсен');
+    } catch (parseError) {
+      console.error('[WEBHOOK] Ошибка парсинга JSON:', parseError);
+      console.error('[WEBHOOK] Тело запроса:', bodyText);
+      throw new Error('Неверный формат JSON в теле запроса');
+    }
     
     console.log('[WEBHOOK] Получен webhook от Telegram:', {
       updateId: body.update_id,

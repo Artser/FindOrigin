@@ -102,3 +102,4 @@ Azure Portal работает только с **Microsoft аккаунтами**
 - [Azure Portal](https://portal.azure.com/)
 
 
+

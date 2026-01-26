@@ -258,3 +258,4 @@ Invoke-RestMethod -Uri "https://api.telegram.org/bot$token/getMe"
 3. Опишите, что именно не работает
 
 
+

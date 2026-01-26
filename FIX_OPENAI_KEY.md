@@ -100,3 +100,4 @@ OPENAI_API_KEY=sk-proj-...
 - Проверьте настройки доступа в OpenAI Dashboard
 
 
+
