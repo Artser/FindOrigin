@@ -76,10 +76,10 @@ try {
 }
 
 Write-Host ""
-Write-Host "=== Done ===" -ForegroundColor Cyan
+Write-Host "=== Готово ===" -ForegroundColor Cyan
 Write-Host ""
-Write-Host "Next steps:" -ForegroundColor Yellow
-Write-Host "1. Make sure TELEGRAM_BOT_TOKEN on Vercel matches this token" -ForegroundColor Gray
-Write-Host "2. Make sure project is redeployed on Vercel" -ForegroundColor Gray
-Write-Host "3. Send a test message to the bot" -ForegroundColor Gray
+Write-Host "Следующие шаги:" -ForegroundColor Yellow
+Write-Host "1. Убедитесь, что TELEGRAM_BOT_TOKEN на Vercel совпадает с этим токеном" -ForegroundColor Gray
+Write-Host "2. Убедитесь, что проект переразвернут на Vercel" -ForegroundColor Gray
+Write-Host "3. Отправьте тестовое сообщение боту" -ForegroundColor Gray
 
