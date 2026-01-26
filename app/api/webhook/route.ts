@@ -13,9 +13,14 @@ export const runtime = 'nodejs';
  * Обработка POST запросов от Telegram
  */
 export async function POST(request: NextRequest) {
+  // Логируем СРАЗУ в самом начале функции
+  console.error('[WEBHOOK] ========================================');
+  console.error('[WEBHOOK] POST запрос получен!');
+  console.error('[WEBHOOK] Время:', new Date().toISOString());
+  
   const startTime = Date.now();
   
-  // Логируем СРАЗУ при получении запроса (до любых операций)
+  // Дублируем логи через console.log и console.error для надежности
   console.log('[WEBHOOK] ========================================');
   console.log('[WEBHOOK] Получен POST запрос на /api/webhook');
   console.log('[WEBHOOK] Время:', new Date().toISOString());

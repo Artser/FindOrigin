@@ -1,4 +1,4 @@
-# Скрипт для проверки и установки Telegram webhook
+﻿# Скрипт для проверки и установки Telegram webhook
 # Использование: .\check-and-set-webhook.ps1
 
 param(
@@ -43,7 +43,7 @@ try {
     Write-Host "   Pending updates: $($webhookInfo.result.pending_update_count)" -ForegroundColor $(if ($webhookInfo.result.pending_update_count -eq 0) { "Green" } else { "Yellow" })
     
     if ($webhookInfo.result.last_error_date) {
-        Write-Host "   ❌ Последняя ошибка webhook:" -ForegroundColor Red
+        Write-Host "   [ERROR] Последняя ошибка webhook:" -ForegroundColor Red
         $errorDate = [DateTimeOffset]::FromUnixTimeSeconds($webhookInfo.result.last_error_date).LocalDateTime
         Write-Host "      Дата: $errorDate" -ForegroundColor Red
         Write-Host "      Сообщение: $($webhookInfo.result.last_error_message)" -ForegroundColor Red
@@ -51,16 +51,16 @@ try {
     
     if ($currentUrl -ne $expectedUrl -or $currentUrl -eq "") {
         Write-Host ""
-        Write-Host "   ⚠️ Webhook установлен неправильно или не установлен" -ForegroundColor Yellow
+        Write-Host "   [WARNING] Webhook установлен неправильно или не установлен" -ForegroundColor Yellow
         Write-Host "   Установка правильного webhook..." -ForegroundColor Yellow
         
         # Удаляем старый webhook и pending updates
         Write-Host "   Удаление старого webhook..." -ForegroundColor Gray
         try {
             Invoke-RestMethod -Uri "https://api.telegram.org/bot$BotToken/deleteWebhook?drop_pending_updates=true" -Method GET | Out-Null
-            Write-Host "   ✅ Старый webhook удален" -ForegroundColor Green
+            Write-Host "   [OK] Старый webhook удален" -ForegroundColor Green
         } catch {
-            Write-Host "   ⚠️ Не удалось удалить старый webhook (возможно, его не было)" -ForegroundColor Yellow
+            Write-Host "   [WARNING] Не удалось удалить старый webhook (возможно, его не было)" -ForegroundColor Yellow
         }
         
         # Устанавливаем новый webhook
@@ -68,22 +68,22 @@ try {
         try {
             $setResult = Invoke-RestMethod -Uri "https://api.telegram.org/bot$BotToken/setWebhook?url=$expectedUrl" -Method GET
             if ($setResult.ok) {
-                Write-Host "   ✅ Webhook успешно установлен!" -ForegroundColor Green
+                Write-Host "   [OK] Webhook успешно установлен!" -ForegroundColor Green
                 Write-Host "   URL: $expectedUrl" -ForegroundColor Green
             } else {
-                Write-Host "   ❌ Ошибка установки webhook: $($setResult.description)" -ForegroundColor Red
+                Write-Host "   [ERROR] Ошибка установки webhook: $($setResult.description)" -ForegroundColor Red
                 exit 1
             }
         } catch {
-            Write-Host "   ❌ Ошибка при установке webhook: $_" -ForegroundColor Red
+            Write-Host "   [ERROR] Ошибка при установке webhook: $_" -ForegroundColor Red
             exit 1
         }
     } else {
-        Write-Host "   ✅ Webhook установлен правильно" -ForegroundColor Green
+        Write-Host "   [OK] Webhook установлен правильно" -ForegroundColor Green
     }
     
 } catch {
-    Write-Host "   ❌ Ошибка при проверке webhook: $_" -ForegroundColor Red
+    Write-Host "   [ERROR] Ошибка при проверке webhook: $_" -ForegroundColor Red
     Write-Host "   Возможно, токен неправильный" -ForegroundColor Yellow
     exit 1
 }
@@ -94,11 +94,11 @@ Write-Host ""
 Write-Host "2. Проверка доступности webhook endpoint..." -ForegroundColor Yellow
 try {
     $response = Invoke-WebRequest -Uri "$VercelUrl/api/webhook" -Method GET -TimeoutSec 10
-    Write-Host "   ✅ Endpoint доступен (статус: $($response.StatusCode))" -ForegroundColor Green
+    Write-Host "   [OK] Endpoint доступен (статус: $($response.StatusCode))" -ForegroundColor Green
     $content = $response.Content | ConvertFrom-Json
     Write-Host "   Ответ: $($content.message)" -ForegroundColor Gray
 } catch {
-    Write-Host "   ❌ Endpoint недоступен или не отвечает" -ForegroundColor Red
+    Write-Host "   [ERROR] Endpoint недоступен или не отвечает" -ForegroundColor Red
     Write-Host "   Ошибка: $_" -ForegroundColor Yellow
     Write-Host "   Убедитесь, что проект развернут на Vercel" -ForegroundColor Yellow
 }
@@ -109,11 +109,11 @@ Write-Host ""
 Write-Host "3. Проверка информации о боте..." -ForegroundColor Yellow
 try {
     $botInfo = Invoke-RestMethod -Uri "https://api.telegram.org/bot$BotToken/getMe"
-    Write-Host "   ✅ Бот активен" -ForegroundColor Green
+    Write-Host "   [OK] Бот активен" -ForegroundColor Green
     Write-Host "   Имя: $($botInfo.result.first_name)" -ForegroundColor Gray
     Write-Host "   Username: @$($botInfo.result.username)" -ForegroundColor Gray
 } catch {
-    Write-Host "   ❌ Ошибка при проверке бота" -ForegroundColor Red
+    Write-Host "   [ERROR] Ошибка при проверке бота" -ForegroundColor Red
     Write-Host "   Возможно, токен неправильный" -ForegroundColor Yellow
 }
 
