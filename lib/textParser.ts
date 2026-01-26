@@ -32,9 +32,10 @@ export function isTelegramLink(url: string): boolean {
  * Это упрощенная реализация, которая может потребовать дополнительной настройки
  */
 export async function extractTextFromTelegramPost(url: string): Promise<string> {
+  // Нормализация URL (вынесено перед try для доступа в catch)
+  const normalizedUrl = url.trim();
+  
   try {
-    // Нормализация URL
-    let normalizedUrl = url.trim();
     
     // Обработка различных форматов ссылок
     if (normalizedUrl.startsWith('@')) {
