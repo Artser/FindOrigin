@@ -1,5 +1,21 @@
 # Check webhook status
-$token = "6436071741:AAF8hTxBWoHlXH8F547RFAOdTdHVog6gpi0"
+# IMPORTANT: Update this token to match @MsDragonBot token from @BotFather
+# Get token from Vercel Environment Variables or from @BotFather
+param(
+    [Parameter(Mandatory=$false)]
+    [string]$Token
+)
+
+# If token not provided, try to get from environment or use placeholder
+if (-not $Token) {
+    $Token = $env:TELEGRAM_BOT_TOKEN
+    if (-not $Token) {
+        Write-Host "ERROR: Token not provided" -ForegroundColor Red
+        Write-Host "Usage: .\check-webhook-status.ps1 -Token 'YOUR_TOKEN'" -ForegroundColor Yellow
+        Write-Host "Or set environment variable: `$env:TELEGRAM_BOT_TOKEN = 'YOUR_TOKEN'" -ForegroundColor Yellow
+        exit 1
+    }
+}
 
 Write-Host "=== Webhook Status ===" -ForegroundColor Cyan
 Write-Host ""

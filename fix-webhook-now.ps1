@@ -85,3 +85,5 @@ Write-Host ""
 Write-Host "Теперь отправьте сообщение боту в Telegram и проверьте логи Vercel." -ForegroundColor Yellow
 Write-Host "Должны появиться записи с префиксом [WEBHOOK]." -ForegroundColor Yellow
 
+
+

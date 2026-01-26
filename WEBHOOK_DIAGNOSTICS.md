@@ -182,3 +182,5 @@ Invoke-RestMethod -Uri "https://find-origin.vercel.app/api/check-env" -Method GE
    - Проверьте, что нет блокировок на стороне Vercel
    - Попробуйте удалить и установить webhook заново
 
+
+

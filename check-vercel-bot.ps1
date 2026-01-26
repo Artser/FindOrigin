@@ -103,3 +103,5 @@ Write-Host ""
 Write-Host "=== Конец диагностики ===" -ForegroundColor Cyan
 
 
+
+

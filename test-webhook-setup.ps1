@@ -144,3 +144,5 @@ Write-Host ""
 Write-Host "=== Конец проверки ===" -ForegroundColor Cyan
 
 
+
+

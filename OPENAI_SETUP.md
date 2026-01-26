@@ -117,3 +117,5 @@ await callOpenAI(messages, 'gpt-3.5-turbo'); // или другая модель
 
 
 
+
+

@@ -136,3 +136,5 @@ if ($info.result.last_error_date) {
    ```
 3. Отправьте сообщение боту
 
+
+

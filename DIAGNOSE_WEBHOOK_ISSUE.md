@@ -211,3 +211,5 @@ Invoke-RestMethod -Uri "https://api.telegram.org/bot$token/deleteWebhook" -Metho
 - [ ] Отправлено тестовое сообщение боту
 - [ ] Логи обновлены после отправки сообщения
 
+
+

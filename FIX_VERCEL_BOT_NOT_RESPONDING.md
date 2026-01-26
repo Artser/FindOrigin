@@ -244,3 +244,5 @@ Write-Host "=== Конец диагностики ===" -ForegroundColor Cyan
    - В Deployments должен быть статус "Ready" (зеленый)
 
 
+
+

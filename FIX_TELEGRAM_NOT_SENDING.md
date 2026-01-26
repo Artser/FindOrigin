@@ -157,3 +157,5 @@ Invoke-RestMethod -Uri "https://api.telegram.org/bot$botToken/setWebhook?url=$ve
 5. Проверьте логи
 
 
+
+

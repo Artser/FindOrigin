@@ -196,3 +196,5 @@ Write-Host "Last error: $($webhookInfo.result.last_error_message)"
    Затем проверьте логи Vercel - должны появиться записи.
 
 
+
+

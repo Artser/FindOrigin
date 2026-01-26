@@ -122,3 +122,5 @@ Write-Host "5. Check Vercel logs:" -ForegroundColor Yellow
 Write-Host "   - Deployments -> last deployment -> Logs" -ForegroundColor Gray
 Write-Host "   - Look for [WEBHOOK] entries or errors" -ForegroundColor Gray
 
+
+

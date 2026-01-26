@@ -168,3 +168,5 @@ Invoke-RestMethod -Uri "https://find-origin.vercel.app/api/check-env" -Method GE
 3. **Webhook установлен на другой URL** - проверьте через `getWebhookInfo`
 4. **Telegram блокирует запросы** - проверьте `last_error_message` в `getWebhookInfo`
 
+
+
