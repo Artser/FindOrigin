@@ -215,3 +215,17 @@ export async function GET() {
   });
 }
 
+/**
+ * Обработка OPTIONS запросов (для CORS)
+ */
+export async function OPTIONS() {
+  return new NextResponse(null, {
+    status: 200,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, X-Telegram-Bot-Api-Secret-Token',
+    },
+  });
+}
+
