@@ -1,12 +1,4 @@
-/**
- * Polling endpoint для получения обновлений от Telegram
- * Временное решение, если webhook не работает
- * НЕ рекомендуется для production!
- */
-
 import { NextResponse } from 'next/server';
-import { TelegramUpdate } from '@/lib/telegram';
-import { processUserRequest } from '@/lib/processRequest';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -24,7 +16,6 @@ export async function GET() {
   }
 
   try {
-    // Получаем обновления
     const response = await fetch(
       `${TELEGRAM_API_URL}${botToken}/getUpdates?offset=-1&limit=1&timeout=1`,
       { method: 'GET' }
@@ -61,7 +52,6 @@ export async function GET() {
         const chatId = message.chat.id;
         const text = message.text;
 
-        // Обработка команды /start
         if (text?.startsWith('/start')) {
           console.log('[POLL] Processing /start command for chatId:', chatId);
           try {
@@ -75,8 +65,8 @@ export async function GET() {
             console.error('[POLL] Error sending welcome message:', error);
           }
         } else if (text && text.trim().length > 0) {
-          // Обработка обычных сообщений
           console.log('[POLL] Processing message for chatId:', chatId);
+          const { processUserRequest } = await import('@/lib/processRequest');
           processUserRequest(chatId, text).catch((error) => {
             console.error('[POLL] Error processing request:', error);
           });
@@ -88,7 +78,6 @@ export async function GET() {
       }
     }
 
-    // Подтверждаем обработку обновлений
     if (processedUpdates.length > 0) {
       const lastUpdateId = Math.max(...processedUpdates);
       try {
