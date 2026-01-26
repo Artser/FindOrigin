@@ -26,7 +26,7 @@ export async function GET(request: NextRequest) {
     // Получаем URL из переменной окружения или из параметра запроса
     const webhookUrl = process.env.WEBHOOK_URL || 
                        request.nextUrl.searchParams.get('url') ||
-                       `${request.nextUrl.origin}/api/webhook`;
+                       `${request.nextUrl.origin}/api/telegram`;
 
     const secretToken = process.env.TELEGRAM_WEBHOOK_SECRET;
 

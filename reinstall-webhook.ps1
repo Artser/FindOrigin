@@ -1,7 +1,7 @@
 # Script to reinstall webhook (delete and set again)
 
 $token = "6825751325:AAGrU8yECxlw6YlH8VBXDyRwYmqdHhf3Z3k"
-$webhookUrl = "https://find-origin.vercel.app/api/webhook"
+$webhookUrl = "https://find-origin.vercel.app/api/telegram"
 
 Write-Host "=== Reinstalling Webhook ===" -ForegroundColor Cyan
 Write-Host ""

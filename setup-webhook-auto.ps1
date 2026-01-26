@@ -1,7 +1,7 @@
 # Automatic webhook setup script
 # This script sets up webhook using the setup-webhook API endpoint
 
-$webhookUrl = "https://find-origin.vercel.app/api/webhook"
+$webhookUrl = "https://find-origin.vercel.app/api/telegram"
 
 Write-Host "=== Automatic Webhook Setup ===" -ForegroundColor Cyan
 Write-Host ""

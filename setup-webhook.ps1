@@ -1,7 +1,7 @@
 # Script for setting up Telegram webhook
 
 $token = "6825751325:AAGrU8yECxlw6YlH8VBXDyRwYmqdHhf3Z3k"
-$webhookUrl = "https://find-origin.vercel.app/api/webhook"
+$webhookUrl = "https://find-origin.vercel.app/api/telegram"
 
 Write-Host "=== Deleting old webhook ===" -ForegroundColor Cyan
 try {

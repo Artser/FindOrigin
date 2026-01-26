@@ -46,7 +46,7 @@ Invoke-RestMethod -Uri "https://find-origin.vercel.app/api/setup-webhook" -Metho
 
 ```powershell
 $token = "6825751325:AAGrU8yECxlw6YlH8VBXDyRwYmqdHhf3Z3k"
-$webhookUrl = "https://find-origin.vercel.app/api/webhook"
+$webhookUrl = "https://find-origin.vercel.app/api/telegram"
 
 Invoke-RestMethod -Uri "https://api.telegram.org/bot$token/setWebhook?url=$webhookUrl" -Method GET
 ```
@@ -63,7 +63,7 @@ Invoke-RestMethod -Uri "https://api.telegram.org/bot$token/setWebhook?url=$webho
 
 ```env
 TELEGRAM_BOT_TOKEN=6825751325:AAGrU8yECxlw6YlH8VBXDyRwYmqdHhf3Z3k
-WEBHOOK_URL=https://find-origin.vercel.app/api/webhook
+WEBHOOK_URL=https://find-origin.vercel.app/api/telegram
 ```
 
 ### На Vercel
@@ -73,7 +73,7 @@ WEBHOOK_URL=https://find-origin.vercel.app/api/webhook
 3. Перейдите в **Settings → Environment Variables**
 4. Добавьте переменные:
    - `TELEGRAM_BOT_TOKEN` = `6825751325:AAGrU8yECxlw6YlH8VBXDyRwYmqdHhf3Z3k`
-   - `WEBHOOK_URL` = `https://find-origin.vercel.app/api/webhook` (опционально)
+   - `WEBHOOK_URL` = `https://find-origin.vercel.app/api/telegram` (опционально)
 5. **ОБЯЗАТЕЛЬНО переразверните проект** после добавления переменных
 
 ## Проверка webhook
@@ -87,14 +87,14 @@ $info.result
 ```
 
 **Ожидаемый результат:**
-- `url` должен быть `https://find-origin.vercel.app/api/webhook`
+- `url` должен быть `https://find-origin.vercel.app/api/telegram`
 - `pending_update_count` должен быть 0
 - `last_error_date` должен отсутствовать
 
 ## Endpoints
 
 ### Основной webhook endpoint
-- **URL:** `https://find-origin.vercel.app/api/webhook`
+- **URL:** `https://find-origin.vercel.app/api/telegram`
 - **Метод:** POST (для Telegram), GET (для проверки)
 
 ### Endpoint для совместимости
