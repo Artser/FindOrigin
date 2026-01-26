@@ -1,263 +1,178 @@
-# Устранение неполадок Telegram-бота
+# Диагностика: Бот не отвечает
 
-## Быстрая диагностика
+## Быстрая проверка
 
-Запустите скрипт проверки:
-
-```powershell
-.\CHECK_BOT_SETUP.ps1
-```
-
-## Основные проблемы и решения
-
-### 1. Бот не отвечает на сообщения
-
-#### Проверка 1: Сервер запущен?
+### 1. Запустите скрипт диагностики
 
 ```powershell
-# Проверьте, запущен ли сервер
-npm run dev
+.\diagnose-bot.ps1
 ```
 
-Сервер должен быть доступен на `http://localhost:3000`
+Скрипт проверит:
+- Работает ли токен бота
+- Установлен ли webhook
+- Доступен ли endpoint
+- Есть ли ошибки в webhook
 
-#### Проверка 2: Webhook настроен?
-
-**Для локальной разработки (через ngrok):**
-
-1. Установите ngrok: https://ngrok.com/download
-2. Запустите ngrok:
-   ```powershell
-   ngrok http 3000
-   ```
-3. Скопируйте URL (например: `https://abc123.ngrok.io`)
-4. Установите webhook:
-   ```
-   https://abc123.ngrok.io/api/set-webhook
-   ```
-   Или через браузер:
-   ```
-   http://localhost:3000/api/set-webhook?url=https://abc123.ngrok.io/api/webhook
-   ```
-
-**Для продакшена (Vercel):**
-
-1. Деплойте проект на Vercel
-2. Установите webhook:
-   ```
-   https://ваш-домен.vercel.app/api/set-webhook?url=https://ваш-домен.vercel.app/api/webhook
-   ```
-
-#### Проверка 3: Переменные окружения
-
-Убедитесь, что в `.env.local` установлены:
-
-```env
-# Обязательно
-TELEGRAM_BOT_TOKEN=ваш_токен_от_BotFather
-OPENAI_API_KEY=sk-ваш_ключ_openai
-
-# Хотя бы один поисковый API
-GOOGLE_SEARCH_API_KEY=ваш_ключ
-GOOGLE_SEARCH_ENGINE_ID=ваш_id
-
-# Или
-YANDEX_CLOUD_API_KEY=AQVN...
-YANDEX_FOLDER_ID=b1g...
-YANDEX_AUTH_TYPE=Api-Key
-
-# Или
-BING_SEARCH_API_KEY=ваш_ключ
-
-# Или
-SERPAPI_KEY=ваш_ключ
-```
-
-**ВАЖНО:** После изменения `.env.local` перезапустите сервер!
-
-#### Проверка 4: Логи сервера
-
-Проверьте консоль, где запущен `npm run dev`. Там должны быть логи:
-- Ошибки при обработке запросов
-- Ошибки при вызове API
-- Ошибки при отправке сообщений
-
-### 2. Ошибка "OPENAI_API_KEY не установлен"
-
-**Решение:**
-1. Откройте `.env.local`
-2. Убедитесь, что строка не закомментирована (нет `#` в начале)
-3. Убедитесь, что ключ правильный (начинается с `sk-`)
-4. Перезапустите сервер
-
-### 3. Ошибка "Не настроен ни один поисковый API"
-
-**Решение:**
-Настройте хотя бы один поисковый API:
-
-**Вариант A: Google Custom Search**
-```env
-GOOGLE_SEARCH_API_KEY=AIza...
-GOOGLE_SEARCH_ENGINE_ID=c38...
-```
-
-**Вариант B: Yandex GPT (рекомендуется для России)**
-```env
-YANDEX_CLOUD_API_KEY=AQVN...
-YANDEX_FOLDER_ID=b1g...
-YANDEX_AUTH_TYPE=Api-Key
-```
-
-**Вариант C: Bing Search**
-```env
-BING_SEARCH_API_KEY=ваш_ключ
-```
-
-**Вариант D: SerpAPI**
-```env
-SERPAPI_KEY=ваш_ключ
-```
-
-### 4. Бот отвечает, но не находит источники
-
-**Возможные причины:**
-1. Поисковый API не работает (проверьте ключи)
-2. Превышен лимит запросов
-3. Проблемы с биллингом
-
-**Решение:**
-- Проверьте логи сервера на наличие ошибок API
-- Проверьте статус биллинга в Google Cloud / Azure / Yandex Cloud
-- Попробуйте другой поисковый API
-
-### 5. AI-анализ не выполняется
-
-**Причины:**
-1. `OPENAI_API_KEY` не установлен
-2. Неправильный ключ OpenAI
-3. Превышен лимит запросов OpenAI
-
-**Решение:**
-- Проверьте наличие `OPENAI_API_KEY` в `.env.local`
-- Проверьте правильность ключа на https://platform.openai.com/api-keys
-- Проверьте баланс на OpenAI аккаунте
-
-### 6. Webhook не работает (403, 401)
-
-**Причины:**
-1. Неправильный URL webhook
-2. Секретный токен не совпадает
-3. Telegram не может достучаться до вашего сервера
-
-**Решение:**
-- Для локальной разработки используйте ngrok
-- Убедитесь, что URL доступен из интернета
-- Проверьте, что `TELEGRAM_WEBHOOK_SECRET` совпадает (если используется)
-
-### 7. Бот отвечает ошибками
-
-**Проверьте логи сервера:**
-- Откройте консоль, где запущен `npm run dev`
-- Найдите ошибки (они будут красным цветом)
-- Скопируйте текст ошибки
-
-**Типичные ошибки:**
-- `API key не установлен` → Проверьте переменные окружения
-- `403 Forbidden` → Проверьте биллинг и права доступа
-- `429 Rate limit` → Превышен лимит, подождите
-- `401 Unauthorized` → Неправильный API ключ
-
-## Пошаговая проверка
-
-### Шаг 1: Проверка сервера
+### 2. Проверьте webhook вручную
 
 ```powershell
-# Запустите сервер
-npm run dev
-
-# В другом терминале проверьте
-Invoke-WebRequest -Uri "http://localhost:3000/api/webhook" -Method GET
+$token = "6825751325:AAGrU8yECxlw6YlH8VBXDyRwYmqdHhf3Z3k"
+$info = Invoke-RestMethod -Uri "https://api.telegram.org/bot$token/getWebhookInfo"
+$info.result | ConvertTo-Json
 ```
 
-Должен вернуться JSON с `status: "ok"`
+**Ожидаемый результат:**
+- `url` должен быть `https://find-origin.vercel.app/api/webhook`
+- `pending_update_count` должен быть 0 или небольшое число
+- `last_error_date` должен отсутствовать
 
-### Шаг 2: Проверка переменных окружения
+### 3. Проверьте endpoint
 
 ```powershell
-# Запустите скрипт проверки
-.\CHECK_BOT_SETUP.ps1
+Invoke-RestMethod -Uri "https://find-origin.vercel.app/api/webhook" -Method GET
 ```
 
-### Шаг 3: Проверка webhook
+**Ожидаемый результат:**
+```json
+{
+  "status": "ok",
+  "message": "FindOrigin Telegram Bot Webhook"
+}
+```
 
+## Основные причины и решения
+
+### Проблема 1: Webhook не установлен
+
+**Симптомы:**
+- `getWebhookInfo` показывает пустой URL или другой URL
+
+**Решение:**
 ```powershell
-# Для локальной разработки через ngrok
-# 1. Запустите ngrok
-ngrok http 3000
-
-# 2. Скопируйте URL (например: https://abc123.ngrok.io)
-
-# 3. Установите webhook
-Invoke-WebRequest -Uri "http://localhost:3000/api/set-webhook?url=https://abc123.ngrok.io/api/webhook"
+.\setup-webhook.ps1
 ```
 
-### Шаг 4: Тест бота
+### Проблема 2: Переменные окружения не установлены на Vercel
 
-1. Откройте Telegram
-2. Найдите вашего бота
-3. Отправьте команду `/start`
-4. Бот должен ответить приветствием
+**Симптомы:**
+- Webhook установлен, но бот не отвечает
+- В логах Vercel ошибка "TELEGRAM_BOT_TOKEN не установлен"
 
-### Шаг 5: Тест поиска
+**Решение:**
+1. Откройте [Vercel Dashboard](https://vercel.com/dashboard)
+2. Выберите проект `find-origin`
+3. Перейдите в **Settings → Environment Variables**
+4. Убедитесь, что установлены:
+   - `TELEGRAM_BOT_TOKEN` = `6825751325:AAGrU8yECxlw6YlH8VBXDyRwYmqdHhf3Z3k`
+   - `OPENROUTER_API_KEY`
+   - `YANDEX_CLOUD_API_KEY`
+   - `YANDEX_FOLDER_ID`
+5. **ОБЯЗАТЕЛЬНО переразверните проект** после добавления переменных
 
-1. Отправьте боту любой текст
-2. Бот должен начать обработку
-3. Проверьте логи сервера на наличие ошибок
+### Проблема 3: Endpoint недоступен
 
-## Получение логов
+**Симптомы:**
+- GET запрос к `/api/webhook` не отвечает или возвращает ошибку
+- В `getWebhookInfo` есть ошибка
 
-### Локальная разработка
+**Решение:**
+1. Проверьте, что проект развернут на Vercel
+2. Проверьте логи деплоя на Vercel
+3. Убедитесь, что домен правильный: `https://find-origin.vercel.app`
 
-Логи отображаются в консоли, где запущен `npm run dev`
+### Проблема 4: Ошибки в коде
 
-### Vercel
+**Симптомы:**
+- Webhook установлен, endpoint доступен, но бот не отвечает
+- В логах Vercel есть ошибки
 
+**Решение:**
 1. Откройте Vercel Dashboard
-2. Выберите проект
-3. Перейдите в раздел "Functions"
-4. Выберите функцию `/api/webhook`
-5. Просмотрите логи
+2. Перейдите в **Deployments → последний деплой → Logs**
+3. Ищите записи с префиксом `[WEBHOOK]` или `[TELEGRAM]`
+4. Проверьте ошибки и исправьте их
 
-## Полезные команды
+## Пошаговая диагностика
+
+### Шаг 1: Проверка токена
 
 ```powershell
-# Проверка статуса webhook (через Telegram Bot API)
-$token = "ваш_токен"
-Invoke-RestMethod -Uri "https://api.telegram.org/bot$token/getWebhookInfo"
-
-# Удаление webhook
-Invoke-RestMethod -Uri "https://api.telegram.org/bot$token/deleteWebhook"
-
-# Проверка работы бота
-Invoke-RestMethod -Uri "https://api.telegram.org/bot$token/getMe"
+$token = "6825751325:AAGrU8yECxlw6YlH8VBXDyRwYmqdHhf3Z3k"
+$botInfo = Invoke-RestMethod -Uri "https://api.telegram.org/bot$token/getMe"
+$botInfo.result
 ```
 
-## Если ничего не помогает
+Должен вернуть информацию о боте. Если ошибка - токен неверный.
 
-1. Проверьте все логи (сервер, Vercel, Telegram)
-2. Убедитесь, что все переменные окружения установлены
-3. Перезапустите сервер
-4. Переустановите webhook
-5. Проверьте, что API ключи активны и имеют доступ
+### Шаг 2: Проверка webhook
 
-## Контакты для помощи
+```powershell
+$token = "6825751325:AAGrU8yECxlw6YlH8VBXDyRwYmqdHhf3Z3k"
+$info = Invoke-RestMethod -Uri "https://api.telegram.org/bot$token/getWebhookInfo"
+$info.result
+```
 
-Если проблема не решается:
-1. Скопируйте текст ошибки из логов
-2. Проверьте, какие переменные окружения установлены (без значений)
-3. Опишите, что именно не работает
+Проверьте:
+- `url` - должен быть правильный
+- `last_error_date` - должен отсутствовать
+- `last_error_message` - должен отсутствовать
 
+### Шаг 3: Проверка endpoint
 
+```powershell
+Invoke-RestMethod -Uri "https://find-origin.vercel.app/api/webhook" -Method GET
+```
 
+Должен вернуть JSON с `status: "ok"`.
 
+### Шаг 4: Проверка переменных на Vercel
 
+1. Vercel Dashboard → ваш проект
+2. Settings → Environment Variables
+3. Убедитесь, что `TELEGRAM_BOT_TOKEN` установлен
+4. Если нет - добавьте и переразверните
+
+### Шаг 5: Проверка логов
+
+1. Vercel Dashboard → ваш проект
+2. Deployments → последний деплой → Logs
+3. Отправьте `/start` боту
+4. Ищите записи `[WEBHOOK]` в логах
+
+## Тестирование
+
+После исправления проблем:
+
+1. Отправьте `/start` боту в Telegram
+2. Проверьте логи на Vercel
+3. Бот должен ответить приветственным сообщением
+
+## Частые ошибки
+
+### "TELEGRAM_BOT_TOKEN не установлен"
+
+**Причина:** Переменная не установлена на Vercel или проект не переразвернут.
+
+**Решение:** Добавьте переменную на Vercel и переразверните проект.
+
+### "Telegram API error: 401"
+
+**Причина:** Неверный токен.
+
+**Решение:** Проверьте токен в `.env.local` и на Vercel.
+
+### "Telegram API error: 403"
+
+**Причина:** Бот заблокирован или токен недействителен.
+
+**Решение:** Проверьте токен через `getMe`.
+
+### Webhook error в getWebhookInfo
+
+**Причина:** Endpoint недоступен или возвращает ошибку.
+
+**Решение:** 
+1. Проверьте доступность endpoint
+2. Проверьте логи Vercel
+3. Убедитесь, что проект развернут
