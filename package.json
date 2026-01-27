@@ -7,7 +7,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "diagnose-bot": "powershell -NoLogo -NoProfile -ExecutionPolicy Bypass -Command \"chcp 65001 > $null; [Console]::OutputEncoding = [System.Text.Encoding]::UTF8; .\\diagnose-telegram-bot.ps1\""
   },
   "repository": {
     "type": "git",
