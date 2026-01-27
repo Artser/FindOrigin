@@ -1,14 +1,14 @@
 # Automatic webhook setup script
 # This script sets up webhook using the setup-webhook API endpoint
 
-$webhookUrl = "https://findorigin.vercel.app/api/telegram"
+$webhookUrl = "https://find-origin-nine.vercel.app/api/telegram"
 
 Write-Host "=== Automatic Webhook Setup ===" -ForegroundColor Cyan
 Write-Host ""
 
 Write-Host "Method 1: Using setup-webhook API endpoint..." -ForegroundColor Yellow
 try {
-    $response = Invoke-RestMethod -Uri "https://find-origin.vercel.app/api/setup-webhook" -Method GET -TimeoutSec 30
+    $response = Invoke-RestMethod -Uri "https://find-origin-nine.vercel.app/api/setup-webhook" -Method GET -TimeoutSec 30
     if ($response.success) {
         Write-Host "Webhook set successfully via API!" -ForegroundColor Green
         Write-Host "Webhook URL: $($response.webhookUrl)" -ForegroundColor Green

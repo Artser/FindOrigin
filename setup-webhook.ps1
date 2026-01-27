@@ -31,7 +31,7 @@ if (Test-Path $envFile) {
     }
 }
 
-$webhookUrl = "https://findorigin.vercel.app/api/telegram"
+$webhookUrl = "https://find-origin-nine.vercel.app/api/telegram"
 
 Write-Host "=== Deleting old webhook ===" -ForegroundColor Cyan
 try {

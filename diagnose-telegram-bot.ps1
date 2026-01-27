@@ -24,7 +24,7 @@ Write-Host "=== Telegram bot diagnostics (FindOrigin) ===" -ForegroundColor Cyan
 Write-Host ""
 
 # Config
-$expectedDomain = "https://findorigin.vercel.app"
+$expectedDomain = "https://find-origin-nine.vercel.app"
 $expectedWebhookPath = "/api/telegram"
 $expectedWebhookUrl = "$expectedDomain$expectedWebhookPath"
 

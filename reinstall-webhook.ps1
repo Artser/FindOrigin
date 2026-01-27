@@ -17,7 +17,7 @@ if (-not $token) {
     exit 1
 }
 
-$webhookUrl = "https://findorigin.vercel.app/api/telegram"
+$webhookUrl = "https://find-origin-nine.vercel.app/api/telegram"
 
 Write-Host "=== Reinstalling Webhook ===" -ForegroundColor Cyan
 Write-Host ""

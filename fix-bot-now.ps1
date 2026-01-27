@@ -20,7 +20,7 @@ if (-not $token) {
     exit 1
 }
 
-$correctWebhookUrl = "https://findorigin.vercel.app/api/telegram"
+$correctWebhookUrl = "https://find-origin-nine.vercel.app/api/telegram"
 
 Write-Host "=== Bot Diagnosis ===" -ForegroundColor Cyan
 Write-Host ""
