@@ -1,7 +1,7 @@
 # Automatic webhook setup script
 # This script sets up webhook using the setup-webhook API endpoint
 
-$webhookUrl = "https://find-origin.vercel.app/api/telegram"
+$webhookUrl = "https://findorigin.vercel.app/api/telegram"
 
 Write-Host "=== Automatic Webhook Setup ===" -ForegroundColor Cyan
 Write-Host ""
@@ -21,7 +21,22 @@ try {
     Write-Host ""
     Write-Host "Method 2: Using direct Telegram API..." -ForegroundColor Yellow
     
-    $token = "6825751325:AAGrU8yECxlw6YlH8VBXDyRwYmqdHhf3Z3k"
+    # Get token from .env.local or environment variable
+    $token = $null
+    $envFile = ".env.local"
+    if (Test-Path $envFile) {
+        $envContent = Get-Content $envFile -Raw
+        if ($envContent -match "TELEGRAM_BOT_TOKEN\s*=\s*([^\r\n]+)") {
+            $token = $matches[1].Trim()
+        }
+    }
+    if (-not $token -and $env:TELEGRAM_BOT_TOKEN) {
+        $token = $env:TELEGRAM_BOT_TOKEN
+    }
+    if (-not $token) {
+        Write-Host "ERROR: TELEGRAM_BOT_TOKEN not found!" -ForegroundColor Red
+        exit 1
+    }
     
     # Delete old webhook
     Write-Host "Deleting old webhook..." -ForegroundColor Gray
@@ -47,7 +62,24 @@ try {
 
 Write-Host ""
 Write-Host "=== Verification ===" -ForegroundColor Cyan
-$token = "6825751325:AAGrU8yECxlw6YlH8VBXDyRwYmqdHhf3Z3k"
+# Use the same token we got earlier
+if (-not $token) {
+    # Get token from .env.local or environment variable
+    $envFile = ".env.local"
+    if (Test-Path $envFile) {
+        $envContent = Get-Content $envFile -Raw
+        if ($envContent -match "TELEGRAM_BOT_TOKEN\s*=\s*([^\r\n]+)") {
+            $token = $matches[1].Trim()
+        }
+    }
+    if (-not $token -and $env:TELEGRAM_BOT_TOKEN) {
+        $token = $env:TELEGRAM_BOT_TOKEN
+    }
+    if (-not $token) {
+        Write-Host "ERROR: TELEGRAM_BOT_TOKEN not found!" -ForegroundColor Red
+        exit 1
+    }
+}
 $info = Invoke-RestMethod -Uri "https://api.telegram.org/bot$token/getWebhookInfo"
 
 Write-Host "Webhook URL: $($info.result.url)" -ForegroundColor $(if ($info.result.url -eq $webhookUrl) { "Green" } else { "Yellow" })

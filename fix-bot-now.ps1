@@ -1,7 +1,26 @@
 # Comprehensive bot diagnosis and fix script
 
-$token = "6825751325:AAGrU8yECxlw6YlH8VBXDyRwYmqdHhf3Z3k"
-$correctWebhookUrl = "https://find-origin.vercel.app/api/telegram"
+# Get token from .env.local or environment variable
+$token = $null
+$envFile = ".env.local"
+if (Test-Path $envFile) {
+    $envContent = Get-Content $envFile -Raw
+    if ($envContent -match "TELEGRAM_BOT_TOKEN\s*=\s*([^\r\n]+)") {
+        $token = $matches[1].Trim()
+        Write-Host "Token loaded from .env.local" -ForegroundColor Green
+    }
+}
+if (-not $token -and $env:TELEGRAM_BOT_TOKEN) {
+    $token = $env:TELEGRAM_BOT_TOKEN
+    Write-Host "Token loaded from environment variable" -ForegroundColor Green
+}
+if (-not $token) {
+    Write-Host "ERROR: TELEGRAM_BOT_TOKEN not found in .env.local or environment variables!" -ForegroundColor Red
+    Write-Host "Set TELEGRAM_BOT_TOKEN in .env.local or as environment variable" -ForegroundColor Yellow
+    exit 1
+}
+
+$correctWebhookUrl = "https://findorigin.vercel.app/api/telegram"
 
 Write-Host "=== Bot Diagnosis ===" -ForegroundColor Cyan
 Write-Host ""
