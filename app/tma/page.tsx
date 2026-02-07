@@ -128,7 +128,6 @@ export default function TMAPage() {
     <div
       className="tma-container"
       style={{
-        minHeight: '100vh',
         minHeight: '100dvh',
         background: theme.bg,
         color: theme.text,
